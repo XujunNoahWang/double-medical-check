@@ -1080,7 +1080,7 @@ body {
 }
 
 /* 按钮样式 */
-.btn {
+.btn, .upload-btn {
     border: none;
     border-radius: var(--radius-medium);
     font-size: 1rem;
@@ -1093,6 +1093,10 @@ body {
     gap: 0.5rem;
     text-decoration: none;
     box-shadow: var(--shadow-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
 }
 
 .btn:disabled {
@@ -1235,49 +1239,83 @@ body {
 /* 响应式设计 */
 @media (max-width: 768px) {
     .header-content {
-        padding: 0 1rem;
+        padding: 0 0.5rem;
     }
-
     .header-left h1 {
-        font-size: 1.25rem;
+        font-size: 1rem;
     }
-
     .main-content {
-        padding: 1rem;
+        padding: 0.5rem;
     }
-
     .upload-hero h2 {
-        font-size: 2rem;
+        font-size: 1.2rem;
+        margin-bottom: 0.5rem;
     }
-
+    .upload-hero p {
+        font-size: 0.95rem;
+        margin-bottom: 1rem;
+    }
     .upload-area {
-        padding: 1rem;
-        min-height: 200px;
+        padding: 0.5rem;
+        min-height: 100px;
     }
-
-    .overview-stats {
-        grid-template-columns: 1fr;
+    .upload-btn {
+        width: 100%;
+        font-size: 0.95rem;
+        padding: 0.9rem 0.2rem;
+        border-radius: 18px;
+        white-space: normal;
+        word-break: break-all;
+        line-height: 1.3;
     }
-
-    .test-item {
-        grid-template-columns: 1fr;
-        text-align: left;
-        gap: 0.5rem;
+    .upload-tips {
+        padding: 0.7rem;
+        font-size: 0.9rem;
     }
-
-    .reference-group {
-        justify-content: flex-start;
+    .upload-tips ul {
+        padding-left: 1.2rem;
     }
-
-    .comparison-insights {
-        grid-template-columns: 1fr;
+    .upload-tips li {
+        font-size: 0.9rem;
+        line-height: 1.5;
+        padding-left: 0.7rem;
     }
-
+    .stat-card {
+        min-width: 80px;
+        font-size: 0.9rem;
+    }
     .action-buttons {
         flex-direction: column;
-        align-items: center;
+        gap: 0.4rem;
+        margin-top: 0.7rem;
     }
-
+    .btn {
+        width: 100%;
+        font-size: 0.95rem;
+        padding: 0.9rem 0;
+        border-radius: 18px;
+    }
+    .app-footer {
+        font-size: 0.7rem;
+        padding: 0.7rem 0;
+        word-break: break-all;
+        line-height: 1.3;
+    }
+    .diagnosis-section, .upload-tips, .report-overview, .test-results-section, .ai-diagnosis {
+        margin-bottom: 0.7rem;
+    }
+    /* 让按钮内容自动换行 */
+    .upload-btn span, .btn span {
+        white-space: normal;
+        word-break: break-all;
+        /* 括号内容换行 */
+        display: inline;
+    }
+    .upload-btn span {
+        /* 用伪元素在括号前加换行 */
+        /* 仅适用于英文和中文都带括号的情况 */
+        /* 方案：用 JS 自动插入 <br>，CSS无法精准实现 */
+    }
     .upload-preview-grid {
         grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
         gap: 0.75rem;
@@ -1290,5 +1328,54 @@ body {
     .preview-actions {
         flex-direction: column;
         gap: 0.75rem;
+    }
+    .test-item {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 1rem 0.5rem;
+        gap: 0.3rem;
+        background: var(--bg-primary);
+        border-radius: 12px;
+        margin-bottom: 0.7rem;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+    }
+    .item-name {
+        font-size: 1rem;
+        font-weight: 600;
+        margin-bottom: 0.2rem;
+        word-break: break-all;
+    }
+    .value-group {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 0.1rem;
+    }
+    .status-tag {
+        font-size: 0.9rem;
+        padding: 0.2rem 0.7rem;
+        border-radius: 12px;
+    }
+    .value {
+        font-size: 1.1rem;
+        font-weight: bold;
+    }
+    .unit {
+        font-size: 0.95rem;
+        color: #aaa;
+    }
+    .reference-group {
+        font-size: 0.85rem;
+        color: #888;
+        margin-top: 0.1rem;
+        display: flex;
+        gap: 0.3rem;
+        flex-wrap: nowrap;
+        white-space: nowrap;
+        align-items: center;
+    }
+    .reference-label {
+        color: #888;
     }
 }
