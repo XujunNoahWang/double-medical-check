@@ -21,6 +21,9 @@ class Config:
     PORT = 5000
     DEBUG = True
     
+    # Flask session 密钥
+    SECRET_KEY = os.getenv("SECRET_KEY", "double-medical-check-secret")
+    
     # 前端服务器配置
     FRONTEND_PORT = 8080
     

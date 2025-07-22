@@ -1,0 +1,126 @@
+{
+  "app": {
+    "name": "Double Medical Check",
+    "subtitle": "医疗检测报告AI分析",
+    "version": "版本",
+    "full_title": "Double Medical Check - 医疗检测报告AI分析"
+  },
+  "navigation": {
+    "home": "首页",
+    "analysis": "分析",
+    "help": "帮助"
+  },
+  "upload": {
+    "title": "上传医疗检测报告",
+    "description": "支持多张图片上传，AI将自动整理检测数据并提供诊断建议",
+    "button": "点击上传报告图片（支持拖拽，支持多图）",
+    "start_analysis": "开始分析",
+    "tips_title": "上传提示",
+    "tips": [
+      "支持血常规、生化检查、免疫检查等报告（X光，CT，MRI，B超，心电图，脑电图，内窥镜，病理报告等将陆续支持）",
+      "可上传多张截图，AI会自动去重合并",
+      "请确保图片清晰，文字可读",
+      "支持 JPG、PNG、WEBP 等格式"
+    ],
+    "preview_alt": "报告图片预览"
+  },
+  "analysis": {
+    "loading": "AI 正在分析医疗报告...",
+    "loading_description": "正在识别检测项目、提取数据并生成诊断建议",
+    "loading_timer": "用时：{time}秒",
+    "loading_tip": "医疗报告分析通常需要30-60秒，请耐心等待",
+    "overview_title": "检测报告概览",
+    "results_title": "检测结果详情",
+    "diagnosis_title": "AI诊断建议",
+    "comparison_title": "诊断对比分析",
+    "total_items": "检测项目",
+    "abnormal_items": "异常项目",
+    "test_date": "检测日期",
+    "not_identified": "未识别",
+    "no_data": "未识别到检测数据",
+    "reference": "参考:"
+  },
+  "diagnosis": {
+    "urgency": "紧急程度",
+    "possible_conditions": "可能的疾病或状况",
+    "recommendations": "建议",
+    "disclaimer": "此分析仅供参考，请以医生诊断为准",
+    "urgency_levels": {
+      "low": "低",
+      "medium": "中等",
+      "high": "高"
+    }
+  },
+  "comparison": {
+    "doctor_input_label": "请输入医生的实际诊断：",
+    "doctor_input_placeholder": "请输入医生的诊断结果、治疗建议等...",
+    "compare_button": "开始对比分析",
+    "comparing": "对比分析中...",
+    "results_title": "对比分析结果",
+    "agreements": "一致点",
+    "differences": "差异点",
+    "ai_view": "AI观点",
+    "doctor_view": "医生观点",
+    "ai_strengths": "AI诊断优势",
+    "ai_limitations": "AI诊断局限",
+    "conclusion": "总结",
+    "agreement_levels": {
+      "high": "高度一致",
+      "medium": "部分一致",
+      "low": "差异较大"
+    }
+  },
+  "status": {
+    "normal": "正常",
+    "high": "偏高",
+    "low": "偏低",
+    "mild": "轻度",
+    "moderate": "中度",
+    "severe": "重度",
+    "unknown": "未知"
+  },
+  "buttons": {
+    "new_analysis": "分析新报告",
+    "export_report": "导出报告",
+    "retry": "重试",
+    "remove": "移除"
+  },
+  "messages": {
+    "no_files": "请先选择医疗报告图片",
+    "upload_success": "上传成功",
+    "analysis_complete": "分析完成",
+    "comparison_complete": "对比分析完成",
+    "export_success": "报告已导出",
+    "no_export_data": "没有可导出的报告数据",
+    "enter_doctor_diagnosis": "请输入医生的诊断内容",
+    "complete_ai_analysis": "请先完成AI分析",
+    "language_success": "语言设置成功"
+  },
+  "errors": {
+    "no_image_files": "未提供图片文件",
+    "no_selected_files": "未选择图片文件",
+    "unsupported_format": "不支持的文件格式: {filename}",
+    "no_valid_images": "未提供有效图片",
+    "ai_service_unavailable": "AI服务暂时不可用，请稍后重试",
+    "analysis_failed": "分析过程中发生错误，请重试",
+    "invalid_request_data": "请求数据格式错误",
+    "missing_diagnosis": "请提供AI诊断和医生诊断内容",
+    "comparison_failed": "对比分析失败，请重试",
+    "page_not_found": "页面未找到",
+    "internal_server_error": "内部服务器错误",
+    "analysis_error": "分析失败: {error}",
+    "comparison_error": "对比分析失败: {error}",
+    "image_processing_failed": "图片处理失败: {error}",
+    "fallback_possible_conditions": "AI响应格式异常，无法解析",
+    "fallback_recommendations": "请重新上传清晰的检测报告图片"
+  },
+  "footer": {
+    "copyright": "© 2024 Double Medical Check | 基于 Google Gemini AI 技术 | 仅供参考，请以医生诊断为准"
+  },
+  "export": {
+    "title": "Double Medical Check - 医疗报告分析结果",
+    "overview": "报告概览",
+    "ai_diagnosis": "AI诊断建议",
+    "export_time": "导出时间"
+  }
+}

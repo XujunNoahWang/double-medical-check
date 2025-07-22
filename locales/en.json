@@ -1,0 +1,126 @@
+{
+  "app": {
+    "name": "Double Medical Check",
+    "subtitle": "AI Medical Report Analysis",
+    "version": "Version",
+    "full_title": "Double Medical Check - AI Medical Report Analysis"
+  },
+  "navigation": {
+    "home": "Home",
+    "analysis": "Analysis",
+    "help": "Help"
+  },
+  "upload": {
+    "title": "Upload Medical Test Reports",
+    "description": "Support multiple image uploads, AI will automatically organize test data and provide diagnostic recommendations",
+    "button": "Click to upload report images (drag & drop supported, multiple files)",
+    "start_analysis": "Start Analysis",
+    "tips_title": "Upload Tips",
+    "tips": [
+      "Supports blood tests, biochemical tests, immunological tests, etc. (X-ray, CT, MRI, ultrasound, ECG, EEG, endoscopy, pathology reports will be supported soon)",
+      "Multiple screenshots can be uploaded, AI will automatically deduplicate and merge",
+      "Please ensure images are clear and text is readable",
+      "Supports JPG, PNG, WEBP and other formats"
+    ],
+    "preview_alt": "Report Image Preview"
+  },
+  "analysis": {
+    "loading": "AI is analyzing medical reports...",
+    "loading_description": "Identifying test items, extracting data and generating diagnostic recommendations",
+    "loading_timer": "Time elapsed: {time}s",
+    "loading_tip": "Medical report analysis usually takes 30-60 seconds, please be patient",
+    "overview_title": "Test Report Overview",
+    "results_title": "Test Results Details",
+    "diagnosis_title": "AI Diagnostic Recommendations",
+    "comparison_title": "Diagnostic Comparison Analysis",
+    "total_items": "Test Items",
+    "abnormal_items": "Abnormal Items",
+    "test_date": "Test Date",
+    "not_identified": "Not Identified",
+    "no_data": "No test data identified",
+    "reference": "Reference:"
+  },
+  "diagnosis": {
+    "urgency": "Urgency Level",
+    "possible_conditions": "Possible Conditions",
+    "recommendations": "Recommendations",
+    "disclaimer": "This analysis is for reference only, please follow doctor's diagnosis",
+    "urgency_levels": {
+      "low": "Low",
+      "medium": "Medium",
+      "high": "High"
+    }
+  },
+  "comparison": {
+    "doctor_input_label": "Please enter the doctor's actual diagnosis:",
+    "doctor_input_placeholder": "Please enter doctor's diagnosis, treatment recommendations, etc...",
+    "compare_button": "Start Comparison Analysis",
+    "comparing": "Comparing...",
+    "results_title": "Comparison Analysis Results",
+    "agreements": "Agreements",
+    "differences": "Differences",
+    "ai_view": "AI View",
+    "doctor_view": "Doctor's View",
+    "ai_strengths": "AI Diagnosis Strengths",
+    "ai_limitations": "AI Diagnosis Limitations",
+    "conclusion": "Conclusion",
+    "agreement_levels": {
+      "high": "High Agreement",
+      "medium": "Partial Agreement",
+      "low": "Significant Differences"
+    }
+  },
+  "status": {
+    "normal": "Normal",
+    "high": "High",
+    "low": "Low",
+    "mild": "Mild",
+    "moderate": "Moderate",
+    "severe": "Severe",
+    "unknown": "Unknown"
+  },
+  "buttons": {
+    "new_analysis": "Analyze New Report",
+    "export_report": "Export Report",
+    "retry": "Retry",
+    "remove": "Remove"
+  },
+  "messages": {
+    "no_files": "Please select medical report images first",
+    "upload_success": "Upload successful",
+    "analysis_complete": "Analysis complete",
+    "comparison_complete": "Comparison analysis complete",
+    "export_success": "Report exported",
+    "no_export_data": "No report data to export",
+    "enter_doctor_diagnosis": "Please enter doctor's diagnosis",
+    "complete_ai_analysis": "Please complete AI analysis first",
+    "language_success": "Language updated successfully"
+  },
+  "errors": {
+    "no_image_files": "No image files provided",
+    "no_selected_files": "No selected image files",
+    "unsupported_format": "Unsupported file format: {filename}",
+    "no_valid_images": "No valid images provided",
+    "ai_service_unavailable": "AI service temporarily unavailable, please try again later",
+    "analysis_failed": "Error occurred during analysis, please retry",
+    "invalid_request_data": "Invalid request data format",
+    "missing_diagnosis": "Please provide both AI diagnosis and doctor's diagnosis",
+    "comparison_failed": "Comparison analysis failed, please retry",
+    "page_not_found": "Page not found",
+    "internal_server_error": "Internal server error",
+    "analysis_error": "Analysis failed: {error}",
+    "comparison_error": "Comparison analysis failed: {error}",
+    "image_processing_failed": "Image processing failed: {error}",
+    "fallback_possible_conditions": "AI response format error, unable to parse",
+    "fallback_recommendations": "Please re-upload clear medical report images"
+  },
+  "footer": {
+    "copyright": "© 2024 Double Medical Check | Powered by Google Gemini AI | For reference only, please follow doctor's diagnosis"
+  },
+  "export": {
+    "title": "Double Medical Check - Medical Report Analysis Results",
+    "overview": "Report Overview",
+    "ai_diagnosis": "AI Diagnostic Recommendations",
+    "export_time": "Export Time"
+  }
+}

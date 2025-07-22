@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     // 获取DOM元素
     const themeToggle = document.getElementById('themeToggle');
+    const languageSelector = document.getElementById('languageSelector');
     const imageUpload = document.getElementById('imageUpload');
     const uploadBtn = document.getElementById('uploadBtn');
     const uploadArea = document.getElementById('uploadArea');
@@ -22,14 +23,20 @@ document.addEventListener('DOMContentLoaded', () => {
     let analyzeTimerInterval = null;
     let analyzeTimerStart = null;
     let currentAnalysisData = null;
+    let currentLanguage = 'zh';
+    let translations = {};
 
     // 初始化
     initEventListeners();
     initTheme();
+    initI18n();
 
     function initEventListeners() {
         // 主题切换
         themeToggle.addEventListener('click', toggleTheme);
+        
+        // 语言切换
+        languageSelector.addEventListener('change', changeLanguage);
         
         // 文件上传
         imageUpload.addEventListener('change', handleFileSelect);
@@ -181,7 +188,7 @@ document.addEventListener('DOMContentLoaded', () => {
             showAnalysisPage();
             analyzeReports();
         } else {
-            showNotification('请先选择医疗报告图片', 'warning');
+            showNotification(t('messages.no_files'), 'warning');
         }
     }
 
@@ -201,12 +208,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const tipEl = document.getElementById('analyzeTip');
         if (timerEl) {
             timerEl.style.display = '';
-            timerEl.textContent = '用时：0.0秒';
+            timerEl.textContent = t('analysis.loading_timer', { time: '0.0' });
             analyzeTimerStart = Date.now();
             if (analyzeTimerInterval) clearInterval(analyzeTimerInterval);
             analyzeTimerInterval = setInterval(() => {
                 const elapsed = ((Date.now() - analyzeTimerStart) / 1000).toFixed(1);
-                timerEl.textContent = `用时：${elapsed}秒`;
+                timerEl.textContent = t('analysis.loading_timer', { time: elapsed });
             }, 100);
         }
         if (tipEl) tipEl.style.display = '';
@@ -245,7 +252,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function analyzeReports() {
         if (selectedFilesList.length === 0) {
-            showError('请先选择医疗报告图片');
+            showError(t('messages.no_files'));
             return;
         }
 
@@ -295,15 +302,15 @@ document.addEventListener('DOMContentLoaded', () => {
         overviewStats.innerHTML = `
             <div class="stat-card">
                 <div class="stat-number">${summary.total_items || 0}</div>
-                <div class="stat-label">检测项目</div>
+                <div class="stat-label">${t('analysis.total_items')}</div>
             </div>
             <div class="stat-card abnormal">
                 <div class="stat-number">${summary.abnormal_items || 0}</div>
-                <div class="stat-label">异常项目</div>
+                <div class="stat-label">${t('analysis.abnormal_items')}</div>
             </div>
             <div class="stat-card">
-                <div class="stat-text">${summary.report_date || '未识别'}</div>
-                <div class="stat-label">检测日期</div>
+                <div class="stat-text">${summary.report_date || t('analysis.not_identified')}</div>
+                <div class="stat-label">${t('analysis.test_date')}</div>
             </div>
         `;
     }
@@ -312,7 +319,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const testCategories = document.getElementById('testCategories');
         
         if (!categories || categories.length === 0) {
-            testCategories.innerHTML = '<p class="no-data">未识别到检测数据</p>';
+            testCategories.innerHTML = `<p class="no-data">${t('analysis.no_data')}</p>`;
             return;
         }
 
@@ -329,7 +336,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 <span class="unit">${item.unit}</span>
                             </div>
                             <div class="reference-group">
-                                <span class="reference-label">参考:</span>
+                                <span class="reference-label">${t('analysis.reference') || '参考:'}</span>
                                 <span class="reference-range">${item.reference_range}</span>
                             </div>
                         </div>
@@ -352,11 +359,11 @@ document.addEventListener('DOMContentLoaded', () => {
         diagnosisContent.innerHTML = `
             <div class="diagnosis-urgency ${urgencyClass}">
                 <i class="fas fa-exclamation-circle"></i>
-                <span>紧急程度: ${urgencyText}</span>
+                <span>${t('diagnosis.urgency')}: ${urgencyText}</span>
             </div>
             
             <div class="diagnosis-section">
-                <h4><i class="fas fa-search"></i> 可能的疾病或状况</h4>
+                <h4><i class="fas fa-search"></i> ${t('diagnosis.possible_conditions')}</h4>
                 <ul class="diagnosis-list">
                     ${(diagnosis.possible_conditions || []).map(condition => 
                         `<li>${condition}</li>`
@@ -365,7 +372,7 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
             
             <div class="diagnosis-section">
-                <h4><i class="fas fa-clipboard-list"></i> 建议</h4>
+                <h4><i class="fas fa-clipboard-list"></i> ${t('diagnosis.recommendations')}</h4>
                 <ul class="recommendations-list">
                     ${(diagnosis.recommendations || []).map(recommendation => 
                         `<li>${recommendation}</li>`
@@ -375,7 +382,7 @@ document.addEventListener('DOMContentLoaded', () => {
             
             <div class="diagnosis-disclaimer">
                 <i class="fas fa-info-circle"></i>
-                ${diagnosis.disclaimer || '此分析仅供参考，请以医生诊断为准'}
+                ${diagnosis.disclaimer || t('diagnosis.disclaimer')}
             </div>
         `;
     }
@@ -384,17 +391,17 @@ document.addEventListener('DOMContentLoaded', () => {
         const doctorDiagnosisText = doctorDiagnosis.value.trim();
         
         if (!doctorDiagnosisText) {
-            showNotification('请输入医生的诊断内容', 'warning');
+            showNotification(t('messages.enter_doctor_diagnosis'), 'warning');
             return;
         }
 
         if (!currentAnalysisData || !currentAnalysisData.ai_diagnosis) {
-            showNotification('请先完成AI分析', 'warning');
+            showNotification(t('messages.complete_ai_analysis'), 'warning');
             return;
         }
 
         compareBtn.disabled = true;
-        compareBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 对比分析中...';
+        compareBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${t('comparison.comparing')}`;
 
         try {
             const aiDiagnosisText = JSON.stringify(currentAnalysisData.ai_diagnosis, null, 2);
@@ -411,7 +418,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             if (!response.ok) {
-                throw new Error('对比分析请求失败');
+                throw new Error(t('errors.comparison_failed'));
             }
 
             const data = await response.json();
@@ -419,17 +426,17 @@ document.addEventListener('DOMContentLoaded', () => {
             if (data.success) {
                 renderComparisonResults(data.comparison_data);
                 comparisonResults.style.display = 'block';
-                showNotification('对比分析完成', 'success');
+                showNotification(t('messages.comparison_complete'), 'success');
             } else {
-                throw new Error(data.error || '对比分析失败');
+                throw new Error(data.error || t('errors.comparison_failed'));
             }
 
         } catch (error) {
-            showNotification(`对比分析失败: ${error.message}`, 'error');
+            showNotification(`${t('errors.comparison_error', { error: error.message })}`, 'error');
             console.error('对比分析错误:', error);
         } finally {
             compareBtn.disabled = false;
-            compareBtn.innerHTML = '<i class="fas fa-search"></i> 开始对比分析';
+            compareBtn.innerHTML = `<i class="fas fa-search"></i> ${t('comparison.compare_button')}`;
         }
     }
 
@@ -439,7 +446,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         comparisonResults.innerHTML = `
             <div class="comparison-header">
-                <h4><i class="fas fa-chart-pie"></i> 对比分析结果</h4>
+                <h4><i class="fas fa-chart-pie"></i> ${t('comparison.results_title')}</h4>
                 <div class="agreement-indicator ${agreementLevel}">
                     <span class="agreement-percentage">${agreementPercentage}%</span>
                     <span class="agreement-level">${getAgreementText(agreementLevel)}</span>
@@ -448,7 +455,7 @@ document.addEventListener('DOMContentLoaded', () => {
             
             <div class="comparison-details">
                 <div class="comparison-section">
-                    <h5><i class="fas fa-check-circle"></i> 一致点</h5>
+                    <h5><i class="fas fa-check-circle"></i> ${t('comparison.agreements')}</h5>
                     <ul class="agreement-list">
                         ${(comparisonData.detailed_comparison.agreements || []).map(agreement => 
                             `<li>${agreement}</li>`
@@ -457,17 +464,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
                 
                 <div class="comparison-section">
-                    <h5><i class="fas fa-exclamation-triangle"></i> 差异点</h5>
+                    <h5><i class="fas fa-exclamation-triangle"></i> ${t('comparison.differences')}</h5>
                     <div class="differences-list">
                         ${(comparisonData.detailed_comparison.differences || []).map(diff => `
                             <div class="difference-item">
                                 <div class="diff-aspect">${diff.aspect}</div>
                                 <div class="diff-views">
                                     <div class="diff-view ai">
-                                        <strong>AI观点:</strong> ${diff.ai_view}
+                                        <strong>${t('comparison.ai_view')}:</strong> ${diff.ai_view}
                                     </div>
                                     <div class="diff-view doctor">
-                                        <strong>医生观点:</strong> ${diff.doctor_view}
+                                        <strong>${t('comparison.doctor_view')}:</strong> ${diff.doctor_view}
                                     </div>
                                 </div>
                                 <div class="diff-analysis">${diff.analysis}</div>
@@ -478,7 +485,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 <div class="comparison-insights">
                     <div class="insights-section">
-                        <h5><i class="fas fa-thumbs-up"></i> AI诊断优势</h5>
+                        <h5><i class="fas fa-thumbs-up"></i> ${t('comparison.ai_strengths')}</h5>
                         <ul>
                             ${(comparisonData.insights.ai_strengths || []).map(strength => 
                                 `<li>${strength}</li>`
@@ -487,7 +494,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                     
                     <div class="insights-section">
-                        <h5><i class="fas fa-exclamation-circle"></i> AI诊断局限</h5>
+                        <h5><i class="fas fa-exclamation-circle"></i> ${t('comparison.ai_limitations')}</h5>
                         <ul>
                             ${(comparisonData.insights.ai_limitations || []).map(limitation => 
                                 `<li>${limitation}</li>`
@@ -497,7 +504,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
                 
                 <div class="comparison-conclusion">
-                    <h5><i class="fas fa-lightbulb"></i> 总结</h5>
+                    <h5><i class="fas fa-lightbulb"></i> ${t('comparison.conclusion')}</h5>
                     <p>${comparisonData.conclusion}</p>
                 </div>
             </div>
@@ -517,7 +524,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function exportReport() {
         if (!currentAnalysisData) {
-            showNotification('没有可导出的报告数据', 'warning');
+            showNotification(t('messages.no_export_data'), 'warning');
             return;
         }
 
@@ -529,81 +536,80 @@ document.addEventListener('DOMContentLoaded', () => {
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = `医疗报告分析_${new Date().toISOString().split('T')[0]}.txt`;
+        a.download = `${t('export.title')}_${new Date().toISOString().split('T')[0]}.txt`;
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
         
-        showNotification('报告已导出', 'success');
+        showNotification(t('messages.export_success'), 'success');
     }
 
     function generateExportContent(analysisData) {
         const summary = analysisData.report_summary;
         const diagnosis = analysisData.ai_diagnosis;
-        
         return `
-Double Medical Check - 医疗报告分析结果
+${t('export.title')}
 =====================================
 
-报告概览:
-- 检测项目总数: ${summary.total_items || 0}
-- 异常项目数量: ${summary.abnormal_items || 0}
-- 检测日期: ${summary.report_date || '未识别'}
+${t('export.overview')}:
+- ${t('analysis.total_items')}: ${summary.total_items || 0}
+- ${t('analysis.abnormal_items')}: ${summary.abnormal_items || 0}
+- ${t('analysis.test_date')}: ${summary.report_date || t('analysis.not_identified')}
 
-AI诊断建议:
-可能的疾病或状况:
+${t('export.ai_diagnosis')}:
+${t('diagnosis.possible_conditions')}:
 ${(diagnosis.possible_conditions || []).map(c => `- ${c}`).join('\n')}
 
-建议:
+${t('diagnosis.recommendations')}:
 ${(diagnosis.recommendations || []).map(r => `- ${r}`).join('\n')}
 
-紧急程度: ${getUrgencyText(diagnosis.urgency_level)}
+${t('diagnosis.urgency')}: ${getUrgencyText(diagnosis.urgency_level)}
 
-免责声明: ${diagnosis.disclaimer || '此分析仅供参考，请以医生诊断为准'}
+${t('diagnosis.disclaimer')}: ${diagnosis.disclaimer || t('diagnosis.disclaimer')}
 
-导出时间: ${new Date().toLocaleString()}
+${t('export.export_time')}: ${new Date().toLocaleString()}
         `.trim();
     }
 
     // 辅助函数
     function getSeverityText(severity) {
         const map = {
-            'mild': '轻度',
-            'moderate': '中度',
-            'severe': '重度'
+            'mild': t('status.mild'),
+            'moderate': t('status.moderate'),
+            'severe': t('status.severe')
         };
-        return map[severity] || '未知';
+        return map[severity] || t('status.unknown') || '未知';
     }
 
     function getStatusText(status) {
         const map = {
-            'normal': '正常',
-            'high': '偏高',
-            'low': '偏低',
-            'mild': '轻度',
-            'moderate': '中度',
-            'severe': '重度'
+            'normal': t('status.normal'),
+            'high': t('status.high'),
+            'low': t('status.low'),
+            'mild': t('status.mild'),
+            'moderate': t('status.moderate'),
+            'severe': t('status.severe')
         };
-        return map[status] || '正常';
+        return map[status] || t('status.normal');
     }
 
     function getUrgencyText(urgency) {
         const map = {
-            'low': '低',
-            'medium': '中等',
-            'high': '高'
+            'low': t('diagnosis.urgency_levels.low'),
+            'medium': t('diagnosis.urgency_levels.medium'),
+            'high': t('diagnosis.urgency_levels.high')
         };
-        return map[urgency] || '中等';
+        return map[urgency] || t('diagnosis.urgency_levels.medium');
     }
 
     function getAgreementText(level) {
         const map = {
-            'high': '高度一致',
-            'medium': '部分一致',
-            'low': '差异较大'
+            'high': t('comparison.agreement_levels.high'),
+            'medium': t('comparison.agreement_levels.medium'),
+            'low': t('comparison.agreement_levels.low')
         };
-        return map[level] || '部分一致';
+        return map[level] || t('comparison.agreement_levels.medium');
     }
 
     function showNotification(message, type = 'info') {
@@ -628,5 +634,144 @@ ${(diagnosis.recommendations || []).map(r => `- ${r}`).join('\n')}
                 }
             }, 300);
         }, 3000);
+    }
+
+    // 国际化相关函数
+    async function initI18n() {
+        // 从localStorage获取保存的语言设置
+        const savedLanguage = localStorage.getItem('language') || 'zh';
+        currentLanguage = savedLanguage;
+        languageSelector.value = currentLanguage;
+        
+        // 加载翻译
+        await loadTranslations();
+        
+        // 应用翻译
+        applyTranslations();
+        
+        // 更新HTML lang属性
+        document.getElementById('html-root').lang = currentLanguage === 'zh' ? 'zh-CN' : 'en';
+    }
+
+    async function loadTranslations() {
+        try {
+            const backendHost = window.location.hostname + ':5000';
+            const response = await fetch(`http://${backendHost}/translations?lang=${currentLanguage}`, {
+                credentials: 'include'
+            });
+            const data = await response.json();
+            if (data.success) {
+                translations = data.translations;
+            }
+        } catch (error) {
+            console.error('加载翻译失败:', error);
+        }
+    }
+
+    async function changeLanguage() {
+        const newLanguage = languageSelector.value;
+        if (newLanguage === currentLanguage) return;
+
+        const backendHost = window.location.hostname + ':5000';
+        try {
+            // 发送语言切换请求到后端
+            const response = await fetch(`http://${backendHost}/set-language`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ language: newLanguage }),
+                credentials: 'include'
+            });
+
+            if (response.ok) {
+                currentLanguage = newLanguage;
+                localStorage.setItem('language', currentLanguage);
+                window.location.reload();
+            }
+        } catch (error) {
+            console.error('语言切换失败:', error);
+            languageSelector.value = currentLanguage; // 恢复原来的选择
+        }
+    }
+
+    function applyTranslations() {
+        // 应用data-i18n属性的翻译
+        document.querySelectorAll('[data-i18n]').forEach(element => {
+            const key = element.getAttribute('data-i18n');
+            const translation = getTranslation(key);
+            if (!translation) return;
+            // 针对 <title> 标签
+            if (element.tagName === 'TITLE') {
+                document.title = translation;
+            } else {
+                element.textContent = translation;
+            }
+        });
+
+        // 应用placeholder翻译
+        document.querySelectorAll('[data-i18n-placeholder]').forEach(element => {
+            const key = element.getAttribute('data-i18n-placeholder');
+            const translation = getTranslation(key);
+            if (translation) {
+                element.placeholder = translation;
+            }
+        });
+
+        // 应用alt翻译
+        document.querySelectorAll('[data-i18n-alt]').forEach(element => {
+            const key = element.getAttribute('data-i18n-alt');
+            const translation = getTranslation(key);
+            if (translation) {
+                element.alt = translation;
+            }
+        });
+
+        // 应用aria-label翻译
+        document.querySelectorAll('[data-i18n-aria-label]').forEach(element => {
+            const key = element.getAttribute('data-i18n-aria-label');
+            const translation = getTranslation(key);
+            if (translation) {
+                element.setAttribute('aria-label', translation);
+            }
+        });
+
+        // 特殊处理上传提示列表
+        const uploadTipsList = document.getElementById('uploadTipsList');
+        if (uploadTipsList && translations.upload && translations.upload.tips) {
+            uploadTipsList.innerHTML = '';
+            translations.upload.tips.forEach(tip => {
+                const li = document.createElement('li');
+                li.textContent = tip;
+                uploadTipsList.appendChild(li);
+            });
+        }
+    }
+
+    function getTranslation(key) {
+        const keys = key.split('.');
+        let value = translations;
+        
+        for (const k of keys) {
+            if (value && typeof value === 'object' && k in value) {
+                value = value[k];
+            } else {
+                return null;
+            }
+        }
+        
+        return typeof value === 'string' ? value : null;
+    }
+
+    function t(key, params = {}) {
+        let translation = getTranslation(key);
+        if (!translation) return key;
+        
+        // 参数替换
+        Object.keys(params).forEach(param => {
+            translation = translation.replace(`{${param}}`, params[param]);
+        });
+        
+        return translation;
     }
 });

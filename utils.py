@@ -8,6 +8,7 @@ import io
 from PIL import Image
 from flask import jsonify
 from config import Config
+from i18n import i18n
 
 def process_image(image_file, index=0):
     """
@@ -48,7 +49,7 @@ def process_image(image_file, index=0):
         }
         
     except Exception as e:
-        raise ValueError(f"图片处理失败: {str(e)}")
+        raise ValueError(i18n.t("errors.image_processing_failed", error=str(e)))
 
 def validate_image_file(filename):
     """
@@ -120,16 +121,16 @@ def create_fallback_analysis_data():
         "report_summary": {
             "total_items": 0,
             "abnormal_items": 0,
-            "report_date": "无法识别",
-            "patient_info": "无法识别"
+            "report_date": i18n.t("analysis.not_identified"),
+            "patient_info": i18n.t("analysis.not_identified")
         },
         "test_categories": [],
         "abnormal_findings": [],
         "ai_diagnosis": {
-            "possible_conditions": ["AI响应格式异常，无法解析"],
-            "recommendations": ["请重新上传清晰的检测报告图片"],
+            "possible_conditions": [i18n.t("errors.fallback_possible_conditions")],
+            "recommendations": [i18n.t("errors.fallback_recommendations")],
             "urgency_level": "medium",
-            "disclaimer": "此分析仅供参考，请以医生诊断为准"
+            "disclaimer": i18n.t("diagnosis.disclaimer")
         }
     }
 

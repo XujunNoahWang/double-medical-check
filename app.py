@@ -16,14 +16,20 @@ from utils import (
     create_error_response, create_success_response, 
     create_fallback_analysis_data, log_error
 )
+from i18n import init_i18n, i18n
 
 # 初始化应用
 app = Flask(__name__, static_folder='static', static_url_path='')
-CORS(app)
+
+# 初始化国际化
+init_i18n(app)
 
 # 加载配置
 config = get_config()
 app.config.from_object(config)
+
+# 启用CORS，支持带cookie的跨域
+CORS(app, supports_credentials=True)
 
 # 验证配置
 try:
@@ -47,11 +53,11 @@ def analyze_medical_reports():
     """分析医疗检测报告"""
     # 验证请求
     if 'images' not in request.files:
-        return create_error_response("No image files provided", 400)
+        return create_error_response(i18n.t("errors.no_image_files"), 400)
 
     image_files = request.files.getlist('images')
     if not image_files or all(file.filename == '' for file in image_files):
-        return create_error_response("No selected image files", 400)
+        return create_error_response(i18n.t("errors.no_selected_files"), 400)
 
     try:
         # 处理多张图片
@@ -60,7 +66,7 @@ def analyze_medical_reports():
             if image_file and image_file.filename != '':
                 # 验证文件类型
                 if not validate_image_file(image_file.filename):
-                    return create_error_response(f"不支持的文件格式: {image_file.filename}", 400)
+                    return create_error_response(i18n.t("errors.unsupported_format", filename=image_file.filename), 400)
                 
                 try:
                     processed_img = process_image(image_file, i)
@@ -69,10 +75,11 @@ def analyze_medical_reports():
                     return create_error_response(str(e), 400)
 
         if not processed_images:
-            return create_error_response("No valid images provided", 400)
+            return create_error_response(i18n.t("errors.no_valid_images"), 400)
 
         # 获取分析提示词
-        prompt_text = get_medical_analysis_prompt()
+        current_lang = i18n.get_language()
+        prompt_text = get_medical_analysis_prompt(current_lang)
 
         # 准备发送给AI的内容
         content_parts = [prompt_text]
@@ -85,7 +92,7 @@ def analyze_medical_reports():
             response_text = response.text.strip()
         except Exception as e:
             log_error(f"AI分析调用失败: {e}")
-            return create_error_response("AI服务暂时不可用，请稍后重试", 503)
+            return create_error_response(i18n.t("errors.ai_service_unavailable"), 503)
         
         # 解析JSON响应
         try:
@@ -105,12 +112,12 @@ def analyze_medical_reports():
             return create_success_response({
                 "analysis_data": fallback_data,
                 "images_processed": len(processed_images),
-                "warning": "AI响应解析异常，显示备用数据"
+                "warning": i18n.t("errors.analysis_failed")
             })
             
     except Exception as e:
         log_error(f"分析过程中发生错误: {e}")
-        return create_error_response("分析过程中发生错误，请重试", 500)
+        return create_error_response(i18n.t("errors.analysis_failed"), 500)
 
 @app.route('/compare', methods=['POST'])
 def compare_diagnosis():
@@ -119,17 +126,18 @@ def compare_diagnosis():
         # 获取请求数据
         data = request.get_json()
         if not data:
-            return create_error_response("请求数据格式错误", 400)
+            return create_error_response(i18n.t("errors.invalid_request_data"), 400)
             
         ai_diagnosis = data.get('ai_diagnosis', '').strip()
         doctor_diagnosis = data.get('doctor_diagnosis', '').strip()
         
         # 验证输入
         if not ai_diagnosis or not doctor_diagnosis:
-            return create_error_response("请提供AI诊断和医生诊断内容", 400)
+            return create_error_response(i18n.t("errors.missing_diagnosis"), 400)
         
         # 获取对比分析提示词
-        prompt_text = get_diagnosis_comparison_prompt(ai_diagnosis, doctor_diagnosis)
+        current_lang = i18n.get_language()
+        prompt_text = get_diagnosis_comparison_prompt(ai_diagnosis, doctor_diagnosis, current_lang)
         
         # 调用AI进行对比分析
         try:
@@ -137,7 +145,7 @@ def compare_diagnosis():
             response_text = response.text.strip()
         except Exception as e:
             log_error(f"AI对比分析调用失败: {e}")
-            return create_error_response("AI服务暂时不可用，请稍后重试", 503)
+            return create_error_response(i18n.t("errors.ai_service_unavailable"), 503)
         
         # 解析JSON响应
         try:
@@ -150,22 +158,56 @@ def compare_diagnosis():
             
         except json.JSONDecodeError as e:
             log_error(f"对比分析JSON解析错误: {e}", response_text)
-            return create_error_response("对比分析响应格式异常", 500)
+            return create_error_response(i18n.t("errors.comparison_failed"), 500)
             
     except Exception as e:
         log_error(f"对比分析过程中发生错误: {e}")
-        return create_error_response("对比分析失败，请重试", 500)
+        return create_error_response(i18n.t("errors.comparison_failed"), 500)
 
 @app.errorhandler(404)
 def not_found(error):
     """处理404错误"""
-    return create_error_response("页面未找到", 404)
+    return create_error_response(i18n.t("errors.page_not_found"), 404)
 
 @app.errorhandler(500)
 def internal_error(error):
     """处理500错误"""
     log_error(f"内部服务器错误: {error}")
-    return create_error_response("内部服务器错误", 500)
+    return create_error_response(i18n.t("errors.internal_server_error"), 500)
+
+@app.route('/set-language', methods=['POST'])
+def set_language():
+    """设置语言"""
+    try:
+        data = request.get_json()
+        if not data or 'language' not in data:
+            return create_error_response(i18n.t("errors.invalid_request_data"), 400)
+        
+        lang = data['language']
+        if i18n.set_language(lang):
+            return create_success_response({
+                "language": lang,
+                "message": "Language updated successfully" if lang == 'en' else "语言设置成功"
+            })
+        else:
+            return create_error_response("Unsupported language" if lang == 'en' else "不支持的语言", 400)
+    except Exception as e:
+        log_error(f"设置语言失败: {e}")
+        return create_error_response(i18n.t("errors.internal_server_error"), 500)
+
+@app.route('/translations')
+def get_translations():
+    """获取当前语言的所有翻译"""
+    try:
+        current_lang = i18n.get_language()
+        translations = i18n.get_all_translations(current_lang)
+        return create_success_response({
+            "language": current_lang,
+            "translations": translations
+        })
+    except Exception as e:
+        log_error(f"获取翻译失败: {e}")
+        return create_error_response(i18n.t("errors.internal_server_error"), 500)
 
 @app.route('/health')
 def health_check():
@@ -173,7 +215,8 @@ def health_check():
     return create_success_response({
         "status": "healthy",
         "app_name": Config.APP_NAME,
-        "version": Config.VERSION
+        "version": Config.VERSION,
+        "language": i18n.get_language()
     })
 
 if __name__ == '__main__':
