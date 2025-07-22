@@ -136,3 +136,11 @@ Thumbs.db
 # Project specific
 uploads/
 temp/
+logs/
+
+# Configuration files with sensitive data
+config_local.py
+
+# Runtime files
+*.pid
+*.sock
