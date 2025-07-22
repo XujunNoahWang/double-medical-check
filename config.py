@@ -35,7 +35,7 @@ class Config:
     
     # 应用信息
     APP_NAME = "Double Medical Check"
-    VERSION = "0.1.0"
+    VERSION = "0.1.2"
     
     @staticmethod
     def validate_config():

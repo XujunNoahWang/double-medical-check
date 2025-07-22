@@ -1,5 +1,93 @@
 # Double Medical Check
 
+---
+
+# English
+
+## Project Introduction
+Double Medical Check is an intelligent medical report analysis and comparison system based on Flask. It supports image upload, AI result organization, doctor diagnosis comparison, and features a separated frontend and backend for easy deployment and extension.
+
+## Key Features
+- Upload and parse medical report images
+- AI automatically organizes test results and provides diagnostic recommendations
+- Doctor diagnosis input and intelligent comparison analysis
+- Frontend-backend separation, static resources served independently
+- **Supports Chinese-English bilingual interface switching**
+- Detailed logging and exception handling for easy debugging
+- Clear code structure, follows Python best practices
+
+## Internationalization (Chinese-English Switch)
+- The language can be switched between English and Chinese in the upper right corner, and all interface and interaction content will switch automatically.
+- Supports session memory and local storage, auto-refresh after switching.
+
+## Test Images
+- The `test_files/` folder in the project root contains 3 test medical report images for users to experience upload and analysis features.
+
+## Installation & Run
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/yourname/double-medical-check.git
+   cd double-medical-check
+   ```
+2. **Install dependencies**
+   ```bash
+   pip install -r requirements.txt
+   ```
+3. **Configure environment variables (optional)**
+   - You can configure API Key and other sensitive info in the `.env` file.
+4. **Start the app**
+   ```bash
+   python start_app.py
+   ```
+   - The browser will automatically open the frontend page after startup.
+
+## File Structure
+```
+double-medical-check/
+├── app.py              # Flask backend main program
+├── config.py           # Configuration file
+├── logger.py           # Logger utility
+├── prompts.py          # AI prompt templates
+├── requirements.txt    # Python dependencies
+├── start_app.py        # One-click startup script
+├── static/             # Frontend static resources
+│   ├── index.html
+│   ├── script.js
+│   └── style.css
+├── test_files/         # Test images
+│   ├── 1.png
+│   ├── 2.png
+│   └── 3.png
+└── utils.py            # Utility functions
+```
+
+## Best Practices
+- Use port detection to ensure reliable startup of backend/frontend services
+- Process management and exception handling are sound, supporting one-click shutdown
+- Unified English comments for internationalization and collaboration
+- Avoid terminal incompatibilities, ensure cross-platform stability
+- Clear structure for easy maintenance and secondary development
+
+## FAQ
+- **Q: What if startup fails?**
+  - Check if Python dependencies are installed
+  - Check if ports are occupied
+  - Check detailed error info in terminal output
+- **Q: How to customize the frontend?**
+  - Modify files in the `static/` directory
+- **Q: How to extend AI capabilities?**
+  - Modify `prompts.py` or integrate more model APIs
+- **Q: How to test upload?**
+  - Use images in `test_files/` for upload testing
+
+## License
+- Current version: 0.1.2
+MIT License
+
+---
+
+# 中文版
+
 ## 项目简介
 Double Medical Check 是一个基于 Flask 的医疗检测报告智能分析与对比系统，支持图片上传、AI 结果整理、医生诊断对比等功能，前后端分离，易于部署和扩展。
 
@@ -50,6 +138,10 @@ double-medical-check/
 │   ├── index.html
 │   ├── script.js
 │   └── style.css
+├── test_files/         # 测试图片
+│   ├── 1.png
+│   ├── 2.png
+│   └── 3.png
 └── utils.py            # 工具函数
 ```
 
