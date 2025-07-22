@@ -81,7 +81,7 @@ double-medical-check/
   - Use images in `test_files/` for upload testing
 
 ## License
-- Current version: 0.1.2
+- Current version: 0.1.3
 MIT License
 
 ---
@@ -165,5 +165,5 @@ double-medical-check/
   - 直接使用 `test_files/` 目录下的图片进行上传测试
 
 ## 许可证
-- 当前版本：0.1.2
+- 当前版本：0.1.3
 MIT License
