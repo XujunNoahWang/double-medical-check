@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Double Medical Check - 医疗检测报告AI分析</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body data-theme="light">
+    <div class="app-container">
+        <!-- 头部区域 -->
+        <header class="app-header">
+            <div class="header-content">
+                <div class="header-left">
+                    <h1><i class="fas fa-stethoscope"></i> Double Medical Check</h1>
+                    <!-- <span class="header-subtitle">医疗检测报告AI分析</span> -->
+                </div>
+                <button class="theme-toggle" id="themeToggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- 主要内容区域 -->
+        <main class="main-content">
+            <!-- 初始上传页面 -->
+            <section class="upload-page" id="uploadPage">
+                <div class="upload-hero">
+                    <h2>上传医疗检测报告</h2>
+                    <p>支持多张图片上传，AI将自动整理检测数据并提供诊断建议</p>
+
+                    <!-- 统一的上传和预览区域 -->
+                    <div class="upload-area" id="uploadArea">
+                        <input type="file" id="imageUpload" accept="image/*" multiple hidden>
+
+                        <!-- 空状态 -->
+                        <div class="upload-empty-state" id="uploadEmptyState">
+                            <label for="imageUpload" class="upload-btn primary" id="uploadBtn">
+                                <i class="fas fa-plus"></i>
+                                点击上传报告图片（支持拖拽，支持多图）
+                            </label>
+                        </div>
+
+                        <!-- 图片预览网格 -->
+                        <div class="upload-preview-grid" id="uploadPreviewGrid" style="display: none;"></div>
+
+                        <!-- 开始分析按钮 -->
+                        <div class="upload-actions" id="uploadActions" style="display: none;">
+                            <button class="btn primary start-analysis-btn" id="startAnalysisBtn">
+                                <i class="fas fa-search"></i>
+                                开始分析
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="upload-tips">
+                        <h4><i class="fas fa-lightbulb"></i> 上传提示</h4>
+                        <ul>
+                            <li>支持血常规、生化检查、免疫检查等各类报告</li>
+                            <li>可上传多张截图，AI会自动去重合并</li>
+                            <li>请确保图片清晰，文字可读</li>
+                            <li>支持 JPG、PNG、WEBP 等格式</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 分析页面 -->
+            <section class="analysis-page" id="analysisPage" style="display: none;">
+                <!-- 分析结果容器 -->
+                <div class="results-container" id="resultsContainer">
+                    <!-- 加载状态 -->
+                    <div class="loading-state" id="loadingState">
+                        <div class="loading-animation">
+                            <div class="loading-spinner"></div>
+                        </div>
+                        <h3>AI 正在分析医疗报告...</h3>
+                        <p>正在识别检测项目、提取数据并生成诊断建议</p>
+                        <div id="analyzeTimer" style="margin-top:0.5rem;font-size:1.1rem;color:#007aff;display:none;">
+                            用时：0.0秒</div>
+                        <div id="analyzeTip" style="margin-top:0.2rem;font-size:0.98rem;color:#888;display:none;">
+                            医疗报告分析通常需要30-60秒，请耐心等待</div>
+                    </div>
+
+                    <!-- 分析结果 -->
+                    <div class="analysis-results" id="analysisResults" style="display: none;">
+                        <!-- 报告概览 -->
+                        <div class="report-overview" id="reportOverview">
+                            <h2><i class="fas fa-chart-line"></i> 检测报告概览</h2>
+                            <div class="overview-stats" id="overviewStats"></div>
+                        </div>
+
+                        <!-- 检测结果表格 -->
+                        <div class="test-results-section">
+                            <h3><i class="fas fa-table"></i> 检测结果详情</h3>
+                            <div class="test-categories" id="testCategories"></div>
+                        </div>
+
+
+
+                        <!-- AI诊断建议 -->
+                        <div class="ai-diagnosis" id="aiDiagnosis">
+                            <h3><i class="fas fa-robot"></i> AI诊断建议</h3>
+                            <div class="diagnosis-content" id="diagnosisContent"></div>
+                        </div>
+
+                        <!-- 对比分析区域 -->
+                        <div class="comparison-section" id="comparisonSection">
+                            <h3><i class="fas fa-balance-scale"></i> 诊断对比分析</h3>
+                            <div class="doctor-input-area">
+                                <label for="doctorDiagnosis">请输入医生的实际诊断：</label>
+                                <textarea id="doctorDiagnosis" placeholder="请输入医生的诊断结果、治疗建议等..."></textarea>
+                                <button class="btn primary" id="compareBtn">
+                                    <i class="fas fa-search"></i>
+                                    开始对比分析
+                                </button>
+                            </div>
+                            <div class="comparison-results" id="comparisonResults" style="display: none;"></div>
+                        </div>
+
+                        <!-- 操作按钮 -->
+                        <div class="action-buttons">
+                            <button class="btn secondary" id="newAnalysisBtn">
+                                <i class="fas fa-plus"></i>
+                                分析新报告
+                            </button>
+                            <button class="btn primary" id="exportBtn">
+                                <i class="fas fa-download"></i>
+                                导出报告
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 错误状态 -->
+                    <div class="error-state" id="errorState" style="display: none;">
+                        <div class="error-icon">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <h3>分析失败</h3>
+                        <p id="errorMessage">请检查网络连接或稍后重试</p>
+                        <button class="btn primary" id="retryBtn">
+                            <i class="fas fa-redo"></i>
+                            重试
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- 页脚 -->
+        <footer class="app-footer">
+            <p>© 2024 Double Medical Check | 基于 Google Gemini AI 技术 | <strong>仅供参考，请以医生诊断为准</strong></p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
