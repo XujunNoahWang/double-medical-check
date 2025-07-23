@@ -1,169 +1,218 @@
-# Double Medical Check
+# 🩺 Double Medical Check
 
----
+一个基于 AI 的医疗检测报告分析应用，使用 Google Gemini AI 帮助用户理解和分析医疗检测结果。
 
-# English
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/XujunNoahWang/double-medical-check&branch=deploy)
 
-## Project Introduction
-Double Medical Check is an intelligent medical report analysis and comparison system based on Flask. It supports image upload, AI result organization, doctor diagnosis comparison, and features a separated frontend and backend for easy deployment and extension.
+## ✨ 功能特性
 
-## Key Features
-- Upload and parse medical report images
-- AI automatically organizes test results and provides diagnostic recommendations
-- Doctor diagnosis input and intelligent comparison analysis
-- Frontend-backend separation, static resources served independently
-- **Supports Chinese-English bilingual interface switching**
-- Detailed logging and exception handling for easy debugging
-- Clear code structure, follows Python best practices
+### 🤖 AI 智能分析
+- **多模态 AI**: 使用 Google Gemini 2.5 Flash 模型进行图像识别和文本分析
+- **智能去重**: 自动识别并合并多张图片中的重复检测项目
+- **结构化输出**: 将检测结果按类别整理（血常规、生化检查、免疫检查等）
+- **异常标识**: 自动标识超出正常范围的检测项目
 
-## Internationalization (Chinese-English Switch)
-- The language can be switched between English and Chinese in the upper right corner, and all interface and interaction content will switch automatically.
-- Supports session memory and local storage, auto-refresh after switching.
+### 📊 报告分析
+- **多图片支持**: 一次上传多张报告图片，AI 自动整合分析
+- **数据提取**: 精确提取检测项目名称、数值、单位、参考范围
+- **诊断建议**: 基于异常指标提供可能的诊断建议和注意事项
+- **对比分析**: 支持 AI 诊断与医生诊断的对比分析
 
-## Test Images
-- The `test_files/` folder in the project root contains 3 test medical report images for users to experience upload and analysis features.
+### 🌐 用户体验
+- **双语支持**: 完整的中英文界面切换
+- **响应式设计**: 适配桌面端和移动端设备
+- **现代 UI**: 采用 Apple 风格的现代化界面设计
+- **可点击标题**: 点击应用标题快速返回主页
+- **主题切换**: 支持明暗主题切换
 
-## Installation & Run
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/yourname/double-medical-check.git
-   cd double-medical-check
-   ```
-2. **Install dependencies**
-   ```bash
-   pip install -r requirements.txt
-   ```
-3. **Configure environment variables (optional)**
-   - You can configure API Key and other sensitive info in the `.env` file.
-4. **Start the app**
-   ```bash
-   python start_app.py
-   ```
-   - The browser will automatically open the frontend page after startup.
+### 🚀 部署方案
+- **本地开发**: 支持本地快速启动和调试
+- **Vercel 部署**: 一键部署到 Vercel，支持全球 CDN 加速
+- **无服务器**: 基于 Serverless 架构，自动扩展
 
-## File Structure
+## 🛠️ 技术栈
+
+### 后端技术
+- **框架**: Python Flask 2.3.3
+- **AI 模型**: Google Gemini 2.5 Flash Lite Preview
+- **图像处理**: Pillow 10.0.1
+- **跨域支持**: Flask-CORS 4.0.0
+- **环境管理**: python-dotenv 1.0.0
+
+### 前端技术
+- **核心**: HTML5 + CSS3 + Vanilla JavaScript
+- **样式**: CSS 变量 + 现代 CSS 特性
+- **图标**: Font Awesome 6.4.0
+- **字体**: SF Pro Display
+
+### 部署技术
+- **平台**: Vercel Serverless Functions
+- **配置**: vercel.json + Python Runtime
+- **静态资源**: Vercel CDN
+
+## 🚀 快速开始
+
+### 环境要求
+- Python 3.8+
+- Google Gemini API Key ([获取地址](https://makersuite.google.com/app/apikey))
+
+### 本地开发
+
+1. **克隆项目**
+```bash
+git clone https://github.com/XujunNoahWang/double-medical-check.git
+cd double-medical-check
 ```
-double-medical-check/
-├── app.py              # Flask backend main program
-├── config.py           # Configuration file
-├── logger.py           # Logger utility
-├── promptsZH.py        # AI prompt templates
-├── requirements.txt    # Python dependencies
-├── start_app.py        # One-click startup script
-├── static/             # Frontend static resources
-│   ├── index.html
-│   ├── script.js
-│   └── style.css
-├── test_files/         # Test images
-│   ├── 1.png
-│   ├── 2.png
-│   └── 3.png
-└── utils.py            # Utility functions
-```
 
-## Best Practices
-- Use port detection to ensure reliable startup of backend/frontend services
-- Process management and exception handling are sound, supporting one-click shutdown
-- Unified English comments for internationalization and collaboration
-- Avoid terminal incompatibilities, ensure cross-platform stability
-- Clear structure for easy maintenance and secondary development
-
-## FAQ
-- **Q: What if startup fails?**
-  - Check if Python dependencies are installed
-  - Check if ports are occupied
-  - Check detailed error info in terminal output
-- **Q: How to customize the frontend?**
-  - Modify files in the `static/` directory
-- **Q: How to extend AI capabilities?**
-  - Modify `promptsZH.py` or integrate more model APIs
-- **Q: How to test upload?**
-  - Use images in `test_files/` for upload testing
-
-## License
-- Current version: 0.1.3
-MIT License
-
----
-
-# 中文版
-
-## 项目简介
-Double Medical Check 是一个基于 Flask 的医疗检测报告智能分析与对比系统，支持图片上传、AI 结果整理、医生诊断对比等功能，前后端分离，易于部署和扩展。
-
-## 主要特性
-- 医疗检测报告图片上传与解析
-- AI 自动整理检测结果与诊断建议
-- 医生诊断输入与智能对比分析
-- 前后端分离，静态资源独立服务
-- **支持中英文国际化界面切换**
-- 详细日志与异常处理，易于调试
-- 代码结构清晰，符合 Python 最佳实践
-
-## 国际化（中英文切换）
-- 页面右上角可选择 English 或 中文，所有界面和交互内容会自动切换。
-- 支持 session 记忆和本地存储，切换后自动刷新。
-
-## 测试图片
-- 项目根目录下 `test_files/` 文件夹内，已包含 3 张测试用医疗报告图片，供用户体验上传与分析功能。
-
-## 安装与运行
-1. **克隆仓库**
-   ```bash
-   git clone https://github.com/yourname/double-medical-check.git
-   cd double-medical-check
-   ```
 2. **安装依赖**
-   ```bash
-   pip install -r requirements.txt
-   ```
-3. **配置环境变量（可选）**
-   - 可在 `.env` 文件中配置 API Key 等敏感信息。
-4. **启动应用**
-   ```bash
-   python start_app.py
-   ```
-   - 启动后浏览器会自动打开前端页面。
+```bash
+pip install -r requirements.txt
+```
 
-## 文件结构
+3. **配置环境变量**
+创建 `.env` 文件：
+```env
+GOOGLE_API_KEY=your_gemini_api_key_here
+```
+
+4. **启动应用**
+```bash
+python start_app.py
+```
+
+5. **访问应用**
+- 前端: http://localhost:8080
+- 后端: http://localhost:5000
+
+### Vercel 部署
+
+1. **Fork 项目** 到你的 GitHub 账户
+
+2. **导入到 Vercel**
+   - 访问 [Vercel](https://vercel.com)
+   - 选择 "Import Git Repository"
+   - 选择 `deploy` 分支
+
+3. **配置环境变量**
+   在 Vercel 项目设置中添加：
+   ```
+   GOOGLE_API_KEY=your_gemini_api_key_here
+   ```
+
+4. **部署完成**
+   Vercel 会自动构建和部署应用
+
+## 📖 使用指南
+
+### 基本流程
+1. **上传报告**: 点击上传按钮或拖拽图片到上传区域
+2. **开始分析**: 点击"开始分析"按钮，AI 开始处理报告
+3. **查看结果**: 查看结构化的分析结果和诊断建议
+4. **导出报告**: 可导出分析结果为文本格式
+5. **对比诊断**: 可选择输入医生诊断进行 AI 对比分析
+
+### 支持的报告类型
+- ✅ **血常规检查**: 白细胞、红细胞、血小板等
+- ✅ **生化检查**: 肝功能、肾功能、血糖、血脂等
+- ✅ **免疫检查**: 各类抗体、免疫球蛋白等
+- ✅ **内分泌检查**: 甲状腺功能、激素水平等
+- 🔄 **影像学检查**: X光、CT、MRI、超声（即将支持）
+
+### 上传建议
+- 📸 确保图片清晰，文字可读
+- 📄 支持 JPG、PNG、WEBP 等格式
+- 📊 可上传多张图片，AI 会自动整合
+- 🔒 注意保护个人隐私信息
+
+## 📁 项目结构
+
 ```
 double-medical-check/
-├── app.py              # Flask 后端主程序
-├── config.py           # 配置文件
-├── logger.py           # 日志工具
-├── promptsZH.py        # AI 提示词模板
-├── requirements.txt    # Python 依赖
-├── start_app.py        # 一键启动脚本
-├── static/             # 前端静态资源
-│   ├── index.html
-│   ├── script.js
-│   └── style.css
-├── test_files/         # 测试图片
-│   ├── 1.png
-│   ├── 2.png
-│   └── 3.png
-└── utils.py            # 工具函数
+├── 📄 app.py                 # Flask 主应用
+├── ⚙️ config.py              # 应用配置
+├── 🛠️ utils.py               # 工具函数
+├── 🌐 i18n.py                # 国际化支持
+├── 🤖 promptsZH.py           # AI 提示词模板
+├── 📁 static/                # 前端静态文件
+│   ├── 🏠 index.html         # 主页面
+│   ├── 🎨 style.css          # 样式文件
+│   └── ⚡ script.js          # 前端脚本
+├── 📁 locales/               # 多语言文件
+│   ├── 🇨🇳 zh.json           # 中文翻译
+│   └── 🇺🇸 en.json           # 英文翻译
+├── 📁 api/                   # Vercel 函数
+│   └── 🚀 index.py           # Vercel 入口
+├── ⚙️ vercel.json            # Vercel 配置
+├── 📋 requirements.txt       # Python 依赖
+├── 🚀 start_app.py           # 本地启动脚本
+└── 📚 VERCEL_DEPLOY.md       # 部署指南
 ```
 
-## 最佳实践说明
-- 采用端口检测法确保后端/前端服务可靠启动
-- 进程管理与异常处理健全，支持一键关闭
-- 代码注释统一英文，便于国际化与协作
-- 避免终端不兼容字符，保证跨平台稳定
-- 结构分明，便于维护和二次开发
+## 🔧 API 接口
 
-## 常见问题 FAQ
-- **Q: 启动失败怎么办？**
-  - 检查 Python 依赖是否安装齐全
-  - 检查端口是否被占用
-  - 查看终端输出的详细错误信息
-- **Q: 如何自定义前端页面？**
-  - 修改 `static/` 目录下的 HTML/CSS/JS 文件即可
-- **Q: 如何扩展 AI 能力？**
-  - 修改 `promptsZH.py` 或集成更多模型接口
-- **Q: 如何体验上传？**
-  - 直接使用 `test_files/` 目录下的图片进行上传测试
+### 分析报告
+```http
+POST /analyze
+Content-Type: multipart/form-data
 
-## 许可证
-- 当前版本：0.1.3
-MIT License
+# 上传多张图片文件
+images: File[]
+```
+
+### 对比诊断
+```http
+POST /compare
+Content-Type: application/json
+
+{
+  "ai_diagnosis": "AI诊断结果",
+  "doctor_diagnosis": "医生诊断结果"
+}
+```
+
+### 语言设置
+```http
+POST /set-language
+Content-Type: application/json
+
+{
+  "language": "en" | "zh"
+}
+```
+
+## ⚠️ 重要声明
+
+- 🩺 **医疗免责**: 本应用仅供参考，不能替代专业医疗诊断
+- 🔒 **隐私保护**: 请勿上传包含敏感个人信息的报告
+- 📊 **准确性**: AI 分析结果可能存在误差，请以医生诊断为准
+- 🏥 **就医建议**: 如有健康问题，请及时就医咨询专业医生
+
+## 🤝 贡献指南
+
+欢迎贡献代码和建议！
+
+1. Fork 项目
+2. 创建特性分支 (`git checkout -b feature/AmazingFeature`)
+3. 提交更改 (`git commit -m 'Add some AmazingFeature'`)
+4. 推送到分支 (`git push origin feature/AmazingFeature`)
+5. 开启 Pull Request
+
+## 📄 许可证
+
+本项目采用 MIT 许可证 - 查看 [LICENSE](LICENSE) 文件了解详情
+
+## 🔗 相关链接
+
+- [Google Gemini API](https://ai.google.dev/)
+- [Vercel 部署文档](https://vercel.com/docs)
+- [Flask 官方文档](https://flask.palletsprojects.com/)
+
+---
+
+<div align="center">
+
+**如果这个项目对你有帮助，请给个 ⭐ Star！**
+
+Made with ❤️ by [XujunNoahWang](https://github.com/XujunNoahWang)
+
+</div>
