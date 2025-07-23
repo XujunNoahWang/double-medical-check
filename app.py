@@ -7,6 +7,8 @@ import json
 from flask import Flask, request
 from flask_cors import CORS
 import google.generativeai as genai
+import requests
+import base64
 
 # 导入自定义模块
 from config import get_config, Config
@@ -41,8 +43,7 @@ except ValueError as e:
     exit(1)
 
 # 初始化Gemini AI
-genai.configure(api_key=Config.GOOGLE_API_KEY)
-model = genai.GenerativeModel(Config.GEMINI_MODEL)
+WORKER_URL = "https://delicate-tooth-e61b.noahwangx.workers.dev/"
 
 @app.route('/')
 def index():
@@ -81,14 +82,34 @@ def analyze_medical_reports():
         prompt_text = get_medical_analysis_prompt()
 
         # 准备发送给AI的内容
-        content_parts = [prompt_text]
-        for img_data in processed_images:
-            content_parts.append(img_data['image'])
+        # content_parts = [prompt_text]
+        # for img_data in processed_images:
+        #     content_parts.append(img_data['image'])
 
-        # 调用AI分析
+        # 新图片分析格式
+        gemini_parts = [{"text": prompt_text}]
+        for img_data in processed_images:
+            img = img_data['image']
+            # 将PIL Image转为base64
+            import io
+            buffered = io.BytesIO()
+            img.save(buffered, format="PNG")
+            img_b64 = base64.b64encode(buffered.getvalue()).decode()
+            gemini_parts.append({
+                "inline_data": {
+                    "mime_type": "image/png",
+                    "data": img_b64
+                }
+            })
+        payload = {
+            "contents": [
+                {"parts": gemini_parts}
+            ]
+        }
         try:
-            response = model.generate_content(content_parts)
-            response_text = response.text.strip()
+            resp = requests.post(WORKER_URL, json=payload, timeout=60)
+            resp.raise_for_status()
+            response_text = resp.text
         except Exception as e:
             log_error(f"AI分析调用失败: {e}")
             return create_error_response(i18n.t("errors.ai_service_unavailable"), 503)
@@ -139,8 +160,14 @@ def compare_diagnosis():
         
         # 调用AI进行对比分析
         try:
-            response = model.generate_content(prompt_text)
-            response_text = response.text.strip()
+            payload = {
+                "contents": [
+                    {"parts": [{"text": prompt_text}]}
+                ]
+            }
+            resp = requests.post(WORKER_URL, json=payload, timeout=60)
+            resp.raise_for_status()
+            response_text = resp.text
         except Exception as e:
             log_error(f"AI对比分析调用失败: {e}")
             return create_error_response(i18n.t("errors.ai_service_unavailable"), 503)
