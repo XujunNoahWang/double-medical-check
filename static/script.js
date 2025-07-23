@@ -261,7 +261,9 @@ document.addEventListener('DOMContentLoaded', () => {
             formData.append('images', file);
         });
 
-        const backendUrl = '/analyze';
+        // 检测是否在本地开发环境
+        const isLocalDev = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+        const backendUrl = isLocalDev ? `http://${window.location.hostname}:5000/analyze` : '/analyze';
 
         try {
             const response = await fetch(backendUrl, {
@@ -405,7 +407,9 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const aiDiagnosisText = JSON.stringify(currentAnalysisData.ai_diagnosis, null, 2);
             
-            const response = await fetch('/compare', {
+            const isLocalDev = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+            const compareUrl = isLocalDev ? `http://${window.location.hostname}:5000/compare` : '/compare';
+            const response = await fetch(compareUrl, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -654,7 +658,9 @@ ${t('export.export_time')}: ${new Date().toLocaleString()}
 
     async function loadTranslations() {
         try {
-            const response = await fetch(`/translations?lang=${currentLanguage}`, {
+            const isLocalDev = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+            const translationsUrl = isLocalDev ? `http://${window.location.hostname}:5000/translations?lang=${currentLanguage}` : `/translations?lang=${currentLanguage}`;
+            const response = await fetch(translationsUrl, {
                 credentials: 'include'
             });
             const data = await response.json();
@@ -673,7 +679,9 @@ ${t('export.export_time')}: ${new Date().toLocaleString()}
 
         try {
             // 发送语言切换请求到后端
-            const response = await fetch('/set-language', {
+            const isLocalDev = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+            const setLanguageUrl = isLocalDev ? `http://${window.location.hostname}:5000/set-language` : '/set-language';
+            const response = await fetch(setLanguageUrl, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
