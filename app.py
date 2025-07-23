@@ -10,7 +10,7 @@ import google.generativeai as genai
 
 # 导入自定义模块
 from config import get_config, Config
-from prompts import get_medical_analysis_prompt, get_diagnosis_comparison_prompt
+from promptsZH import get_medical_analysis_prompt, get_diagnosis_comparison_prompt
 from utils import (
     process_image, validate_image_file, clean_json_response,
     create_error_response, create_success_response, 

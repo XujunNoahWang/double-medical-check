@@ -47,7 +47,7 @@ double-medical-check/
 ├── app.py              # Flask backend main program
 ├── config.py           # Configuration file
 ├── logger.py           # Logger utility
-├── prompts.py          # AI prompt templates
+├── promptsZH.py        # AI prompt templates
 ├── requirements.txt    # Python dependencies
 ├── start_app.py        # One-click startup script
 ├── static/             # Frontend static resources
@@ -76,7 +76,7 @@ double-medical-check/
 - **Q: How to customize the frontend?**
   - Modify files in the `static/` directory
 - **Q: How to extend AI capabilities?**
-  - Modify `prompts.py` or integrate more model APIs
+  - Modify `promptsZH.py` or integrate more model APIs
 - **Q: How to test upload?**
   - Use images in `test_files/` for upload testing
 
@@ -131,7 +131,7 @@ double-medical-check/
 ├── app.py              # Flask 后端主程序
 ├── config.py           # 配置文件
 ├── logger.py           # 日志工具
-├── prompts.py          # AI 提示词模板
+├── promptsZH.py        # AI 提示词模板
 ├── requirements.txt    # Python 依赖
 ├── start_app.py        # 一键启动脚本
 ├── static/             # 前端静态资源
@@ -160,7 +160,7 @@ double-medical-check/
 - **Q: 如何自定义前端页面？**
   - 修改 `static/` 目录下的 HTML/CSS/JS 文件即可
 - **Q: 如何扩展 AI 能力？**
-  - 修改 `prompts.py` 或集成更多模型接口
+  - 修改 `promptsZH.py` 或集成更多模型接口
 - **Q: 如何体验上传？**
   - 直接使用 `test_files/` 目录下的图片进行上传测试
 
