@@ -216,3 +216,224 @@ Content-Type: application/json
 Made with ❤️ by [XujunNoahWang](https://github.com/XujunNoahWang)
 
 </div>
+---
+
+# 
+🩺 Double Medical Check (English)
+
+An AI-powered medical test report analysis application that uses Google Gemini AI to help users understand and analyze medical test results.
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/XujunNoahWang/double-medical-check&branch=deploy)
+
+## ✨ Features
+
+### 🤖 AI Intelligence
+- **Multimodal AI**: Uses Google Gemini 2.5 Flash model for image recognition and text analysis
+- **Smart Deduplication**: Automatically identifies and merges duplicate test items from multiple images
+- **Structured Output**: Organizes test results by category (blood routine, biochemical tests, immunological tests, etc.)
+- **Abnormal Detection**: Automatically identifies test items that exceed normal ranges
+
+### 📊 Report Analysis
+- **Multi-image Support**: Upload multiple report images at once, AI automatically integrates analysis
+- **Data Extraction**: Precisely extracts test item names, values, units, and reference ranges
+- **Diagnostic Suggestions**: Provides possible diagnostic suggestions and precautions based on abnormal indicators
+- **Comparison Analysis**: Supports comparison between AI diagnosis and doctor's diagnosis
+
+### 🌐 User Experience
+- **Bilingual Support**: Complete Chinese-English interface switching
+- **Responsive Design**: Adapts to desktop and mobile devices
+- **Modern UI**: Apple-style modern interface design
+- **Clickable Title**: Click app title to quickly return to homepage
+- **Theme Toggle**: Supports light and dark theme switching
+
+### 🚀 Deployment Options
+- **Local Development**: Supports local quick start and debugging
+- **Vercel Deployment**: One-click deployment to Vercel with global CDN acceleration
+- **Serverless**: Based on Serverless architecture with automatic scaling
+
+## 🛠️ Tech Stack
+
+### Backend Technologies
+- **Framework**: Python Flask 2.3.3
+- **AI Model**: Google Gemini 2.5 Flash Lite Preview
+- **Image Processing**: Pillow 10.0.1
+- **CORS Support**: Flask-CORS 4.0.0
+- **Environment Management**: python-dotenv 1.0.0
+
+### Frontend Technologies
+- **Core**: HTML5 + CSS3 + Vanilla JavaScript
+- **Styling**: CSS Variables + Modern CSS Features
+- **Icons**: Font Awesome 6.4.0
+- **Fonts**: SF Pro Display
+
+### Deployment Technologies
+- **Platform**: Vercel Serverless Functions
+- **Configuration**: vercel.json + Python Runtime
+- **Static Assets**: Vercel CDN
+
+## 🚀 Quick Start
+
+### Requirements
+- Python 3.8+
+- Google Gemini API Key ([Get here](https://makersuite.google.com/app/apikey))
+
+### Local Development
+
+1. **Clone the project**
+```bash
+git clone https://github.com/XujunNoahWang/double-medical-check.git
+cd double-medical-check
+```
+
+2. **Install dependencies**
+```bash
+pip install -r requirements.txt
+```
+
+3. **Configure environment variables**
+Create `.env` file:
+```env
+GOOGLE_API_KEY=your_gemini_api_key_here
+```
+
+4. **Start the application**
+```bash
+python start_app.py
+```
+
+5. **Access the application**
+- Frontend: http://localhost:8080
+- Backend: http://localhost:5000
+
+### Vercel Deployment
+
+1. **Fork the project** to your GitHub account
+
+2. **Import to Vercel**
+   - Visit [Vercel](https://vercel.com)
+   - Select "Import Git Repository"
+   - Choose the `deploy` branch
+
+3. **Configure environment variables**
+   Add in Vercel project settings:
+   ```
+   GOOGLE_API_KEY=your_gemini_api_key_here
+   ```
+
+4. **Deployment complete**
+   Vercel will automatically build and deploy the application
+
+## 📖 Usage Guide
+
+### Basic Workflow
+1. **Upload Reports**: Click upload button or drag images to upload area
+2. **Start Analysis**: Click "Start Analysis" button, AI begins processing reports
+3. **View Results**: View structured analysis results and diagnostic suggestions
+4. **Export Report**: Export analysis results in text format
+5. **Compare Diagnosis**: Optionally input doctor's diagnosis for AI comparison analysis
+
+### Supported Report Types
+- ✅ **Blood Routine Tests**: White blood cells, red blood cells, platelets, etc.
+- ✅ **Biochemical Tests**: Liver function, kidney function, blood sugar, blood lipids, etc.
+- ✅ **Immunological Tests**: Various antibodies, immunoglobulins, etc.
+- ✅ **Endocrine Tests**: Thyroid function, hormone levels, etc.
+- 🔄 **Imaging Tests**: X-ray, CT, MRI, ultrasound (coming soon)
+
+### Upload Recommendations
+- 📸 Ensure images are clear with readable text
+- 📄 Supports JPG, PNG, WEBP and other formats
+- 📊 Can upload multiple images, AI will automatically integrate
+- 🔒 Pay attention to protecting personal privacy information
+
+## 📁 Project Structure
+
+```
+double-medical-check/
+├── 📄 app.py                 # Flask main application
+├── ⚙️ config.py              # Application configuration
+├── 🛠️ utils.py               # Utility functions
+├── 🌐 i18n.py                # Internationalization support
+├── 🤖 promptsZH.py           # AI prompt templates
+├── 📁 static/                # Frontend static files
+│   ├── 🏠 index.html         # Main page
+│   ├── 🎨 style.css          # Style file
+│   └── ⚡ script.js          # Frontend script
+├── 📁 locales/               # Multi-language files
+│   ├── 🇨🇳 zh.json           # Chinese translations
+│   └── 🇺🇸 en.json           # English translations
+├── 📁 api/                   # Vercel functions
+│   └── 🚀 index.py           # Vercel entry point
+├── ⚙️ vercel.json            # Vercel configuration
+├── 📋 requirements.txt       # Python dependencies
+├── 🚀 start_app.py           # Local startup script
+└── 📚 VERCEL_DEPLOY.md       # Deployment guide
+```
+
+## 🔧 API Endpoints
+
+### Analyze Reports
+```http
+POST /analyze
+Content-Type: multipart/form-data
+
+# Upload multiple image files
+images: File[]
+```
+
+### Compare Diagnosis
+```http
+POST /compare
+Content-Type: application/json
+
+{
+  "ai_diagnosis": "AI diagnosis result",
+  "doctor_diagnosis": "Doctor's diagnosis result"
+}
+```
+
+### Language Settings
+```http
+POST /set-language
+Content-Type: application/json
+
+{
+  "language": "en" | "zh"
+}
+```
+
+## ⚠️ Important Disclaimers
+
+- 🩺 **Medical Disclaimer**: This application is for reference only and cannot replace professional medical diagnosis
+- 🔒 **Privacy Protection**: Do not upload reports containing sensitive personal information
+- 📊 **Accuracy**: AI analysis results may contain errors, please refer to doctor's diagnosis
+- 🏥 **Medical Advice**: If you have health problems, please seek medical attention and consult professional doctors promptly
+
+## 🤝 Contributing
+
+Contributions and suggestions are welcome!
+
+1. Fork the project
+2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
+
+## 🔗 Related Links
+
+- [Google Gemini API](https://ai.google.dev/)
+- [Vercel Documentation](https://vercel.com/docs)
+- [Flask Documentation](https://flask.palletsprojects.com/)
+
+---
+
+<div align="center">
+
+**If this project helps you, please give it a ⭐ Star!**
+
+Made with ❤️ by [XujunNoahWang](https://github.com/XujunNoahWang)
+
+</div>
