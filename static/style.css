@@ -215,7 +215,8 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
+    text-align: center;
 }
 
 .upload-area:hover,
@@ -353,7 +354,18 @@ body {
 .upload-actions {
     display: flex;
     justify-content: center;
+    align-items: center;
     width: 100%;
+    margin-top: 1rem;
+    text-align: center;
+}
+
+.start-analysis-btn {
+    min-width: 200px;
+    margin: 0 auto;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
 }
 
 .start-analysis-btn:disabled {
@@ -1090,13 +1102,12 @@ body {
     transition: var(--transition);
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: 0.5rem;
     text-decoration: none;
     box-shadow: var(--shadow-light);
-    display: flex;
-    align-items: center;
-    justify-content: center;
     text-align: center;
+    white-space: nowrap;
 }
 
 .btn:disabled {
