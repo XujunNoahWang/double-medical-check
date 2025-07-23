@@ -78,8 +78,7 @@ def analyze_medical_reports():
             return create_error_response(i18n.t("errors.no_valid_images"), 400)
 
         # 获取分析提示词
-        current_lang = i18n.get_language()
-        prompt_text = get_medical_analysis_prompt(current_lang)
+        prompt_text = get_medical_analysis_prompt()
 
         # 准备发送给AI的内容
         content_parts = [prompt_text]
@@ -136,8 +135,7 @@ def compare_diagnosis():
             return create_error_response(i18n.t("errors.missing_diagnosis"), 400)
         
         # 获取对比分析提示词
-        current_lang = i18n.get_language()
-        prompt_text = get_diagnosis_comparison_prompt(ai_diagnosis, doctor_diagnosis, current_lang)
+        prompt_text = get_diagnosis_comparison_prompt(ai_diagnosis, doctor_diagnosis)
         
         # 调用AI进行对比分析
         try:
