@@ -18,7 +18,7 @@ class Config:
     
     # 服务器配置
     HOST = "0.0.0.0"
-    PORT = 5000
+    PORT = int(os.environ.get("PORT", 5000))
     DEBUG = True
     
     # Flask session 密钥
