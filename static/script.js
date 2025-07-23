@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const compareBtn = document.getElementById('compareBtn');
     const doctorDiagnosis = document.getElementById('doctorDiagnosis');
     const comparisonResults = document.getElementById('comparisonResults');
+    const appTitle = document.getElementById('appTitle');
 
     let selectedFilesList = [];
     let analyzeTimerInterval = null;
@@ -52,6 +53,9 @@ document.addEventListener('DOMContentLoaded', () => {
         exportBtn.addEventListener('click', exportReport);
         retryBtn.addEventListener('click', analyzeReports);
         compareBtn.addEventListener('click', compareDiagnosis);
+        
+        // 标题点击回到主页
+        appTitle.addEventListener('click', goToHomePage);
     }
 
     function initTheme() {
@@ -523,6 +527,11 @@ document.addEventListener('DOMContentLoaded', () => {
         displayImagePreviews(); // 重置预览状态
         doctorDiagnosis.value = '';
         comparisonResults.style.display = 'none';
+    }
+
+    function goToHomePage() {
+        // 回到主页，重置所有状态
+        resetToUpload();
     }
 
     function exportReport() {

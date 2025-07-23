@@ -111,6 +111,12 @@ body {
     color: var(--accent-blue);
 }
 
+/* 可点击标题样式 */
+.app-title-clickable {
+    cursor: pointer;
+    user-select: none;
+}
+
 .header-subtitle {
     font-size: 0.9rem;
     color: var(--text-secondary);
