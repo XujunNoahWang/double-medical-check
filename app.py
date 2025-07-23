@@ -217,6 +217,9 @@ def health_check():
         "language": i18n.get_language()
     })
 
+# Vercel 需要的应用入口点
+application = app
+
 if __name__ == '__main__':
     print(f"启动 {Config.APP_NAME} v{Config.VERSION}")
     print(f"访问地址: http://{Config.HOST}:{Config.PORT}")

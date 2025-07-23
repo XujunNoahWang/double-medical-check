@@ -52,7 +52,7 @@ class DevelopmentConfig(Config):
 # 生产环境配置
 class ProductionConfig(Config):
     DEBUG = False
-    HOST = "127.0.0.1"
+    HOST = "0.0.0.0"
 
 # 根据环境变量选择配置
 config = {

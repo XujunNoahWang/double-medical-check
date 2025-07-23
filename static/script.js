@@ -261,8 +261,7 @@ document.addEventListener('DOMContentLoaded', () => {
             formData.append('images', file);
         });
 
-        const backendHost = window.location.hostname;
-        const backendUrl = `http://${backendHost}:5000/analyze`;
+        const backendUrl = '/analyze';
 
         try {
             const response = await fetch(backendUrl, {
@@ -406,7 +405,7 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const aiDiagnosisText = JSON.stringify(currentAnalysisData.ai_diagnosis, null, 2);
             
-            const response = await fetch(`http://${window.location.hostname}:5000/compare`, {
+            const response = await fetch('/compare', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -655,8 +654,7 @@ ${t('export.export_time')}: ${new Date().toLocaleString()}
 
     async function loadTranslations() {
         try {
-            const backendHost = window.location.hostname + ':5000';
-            const response = await fetch(`http://${backendHost}/translations?lang=${currentLanguage}`, {
+            const response = await fetch(`/translations?lang=${currentLanguage}`, {
                 credentials: 'include'
             });
             const data = await response.json();
@@ -672,10 +670,10 @@ ${t('export.export_time')}: ${new Date().toLocaleString()}
         const newLanguage = languageSelector.value;
         if (newLanguage === currentLanguage) return;
 
-        const backendHost = window.location.hostname + ':5000';
+
         try {
             // 发送语言切换请求到后端
-            const response = await fetch(`http://${backendHost}/set-language`, {
+            const response = await fetch('/set-language', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
